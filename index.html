@@ -530,6 +530,246 @@ footer{
         max-width:300px;
     }
 }
+
+    /* =========================================
+   VISOR DE NOAH A PANTALLA COMPLETA
+   ========================================= */
+
+.photo-inner{
+    cursor:pointer;
+    position:relative;
+}
+
+.photo-hint{
+    position:absolute;
+    left:50%;
+    bottom:13px;
+    transform:translateX(-50%);
+    padding:7px 14px;
+    border-radius:30px;
+
+    background:rgba(0,0,0,.48);
+    border:1px solid rgba(235,207,128,.28);
+
+    color:rgba(244,221,153,.78);
+    font-family:'Cinzel',serif;
+    font-size:.55rem;
+    letter-spacing:1.4px;
+    white-space:nowrap;
+
+    backdrop-filter:blur(6px);
+
+    opacity:.75;
+    transition:.35s ease;
+}
+
+.photo-inner:hover .photo-hint{
+    opacity:1;
+}
+
+
+/* PANTALLA COMPLETA */
+
+.photo-fullscreen{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(75,47,94,.18),
+            transparent 45%
+        ),
+        rgba(0,0,0,.97);
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+
+    transition:
+        opacity .45s ease,
+        visibility .45s ease;
+}
+
+.photo-fullscreen.active{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+
+/* brillo suave detrás de Noah */
+
+.fullscreen-glow{
+    position:absolute;
+    width:65vw;
+    height:65vw;
+    max-width:650px;
+    max-height:650px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(190,145,255,.12),
+            transparent 68%
+        );
+
+    filter:blur(25px);
+    pointer-events:none;
+}
+
+
+/* imagen ampliada */
+
+.photo-fullscreen img{
+    position:relative;
+    z-index:2;
+
+    max-width:94vw;
+    max-height:82vh;
+
+    width:auto;
+    height:auto;
+
+    object-fit:contain;
+
+    border-radius:14px;
+
+    box-shadow:
+        0 0 0 1px rgba(235,207,128,.20),
+        0 0 35px rgba(210,170,80,.12),
+        0 25px 80px rgba(0,0,0,.9);
+
+    transform:scale(.92);
+    transition:transform .5s cubic-bezier(.2,.8,.2,1);
+}
+
+.photo-fullscreen.active img{
+    transform:scale(1);
+}
+
+
+/* botón para regresar */
+
+.back-letter{
+    position:absolute;
+    z-index:5;
+
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%);
+
+    min-width:205px;
+
+    padding:13px 22px;
+
+    border-radius:40px;
+
+    border:1px solid rgba(218,184,83,.55);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(34,25,12,.96),
+            rgba(15,10,19,.98)
+        );
+
+    color:#e8ce83;
+
+    font-family:'Cinzel',serif;
+    font-size:.72rem;
+    letter-spacing:1.5px;
+
+    box-shadow:
+        0 0 20px rgba(210,174,75,.12),
+        0 8px 35px rgba(0,0,0,.7);
+
+    cursor:pointer;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease,
+        color .3s ease;
+}
+
+.back-letter:hover{
+    transform:translateX(-50%) translateY(-3px);
+
+    color:#fff0b5;
+
+    box-shadow:
+        0 0 25px rgba(221,184,77,.25),
+        0 10px 40px rgba(0,0,0,.8);
+}
+
+
+/* pequeño detalle superior */
+
+.photo-fullscreen::before{
+    content:"NOAH  ·  SIEMPRE EN NUESTROS CORAZONES";
+
+    position:absolute;
+    top:22px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:90%;
+
+    text-align:center;
+
+    color:rgba(232,207,131,.55);
+
+    font-family:'Cinzel',serif;
+    font-size:.55rem;
+    letter-spacing:3px;
+
+    z-index:5;
+}
+
+
+/* móvil */
+
+@media(max-width:600px){
+
+    .photo-hint{
+        font-size:.5rem;
+        letter-spacing:1px;
+        bottom:9px;
+    }
+
+    .photo-fullscreen{
+        padding:12px;
+    }
+
+    .photo-fullscreen img{
+        max-width:96vw;
+        max-height:76vh;
+        border-radius:10px;
+    }
+
+    .photo-fullscreen::before{
+        top:17px;
+        font-size:.45rem;
+        letter-spacing:2px;
+    }
+
+    .back-letter{
+        bottom:18px;
+        min-width:190px;
+        padding:12px 18px;
+        font-size:.65rem;
+    }
+    }
+    
 </style>
 </head>
 
@@ -564,22 +804,54 @@ footer{
     </header>
 
 
-    <!-- RECUADRO SUPERIOR PARA LA IMAGEN -->
+   <!-- RECUADRO SUPERIOR PARA LA IMAGEN -->
 
-    <section class="photo-frame">
+<section class="photo-frame" id="photoFrame">
 
-        <div class="cat-corner one">🐾</div>
+    <div class="cat-corner one">🐾</div>
 
-        <div class="photo-inner">
+    <div class="photo-inner">
 
-            <!-- CAMBIA ESTE NOMBRE POR EL DE TU IMAGEN -->
-            <img src="file_00000000339c81f59ff19359a9304c43.png" alt="Un recuerdo especial">
+        <img
+            id="noahPhoto"
+            src="file_00000000339c81f59ff19359a9304c43.png"
+            alt="Noah"
+        >
 
+        <div class="photo-hint">
+            <span>🐾</span>
+            Doble toque para ver
+            <span>🐾</span>
         </div>
 
-        <div class="cat-corner two">🐾</div>
+    </div>
 
-    </section>
+    <div class="cat-corner two">🐾</div>
+
+</section>
+
+
+<!-- VISOR DE FOTO A PANTALLA COMPLETA -->
+
+<div class="photo-fullscreen" id="photoFullscreen">
+
+    <div class="fullscreen-glow"></div>
+
+    <img
+        id="fullscreenImage"
+        src="file_00000000339c81f59ff19359a9304c43.png"
+        alt="Noah"
+    >
+
+    <button
+        class="back-letter"
+        id="backLetter"
+        type="button"
+    >
+        ← Volver a la carta
+    </button>
+
+</div>
 
 
     <!-- CARTA -->
@@ -667,6 +939,100 @@ footer{
     </footer>
 
 </main>
+    <script>
+/* =========================================
+   DOBLE CLIC / DOBLE TOQUE PARA NOAH
+   ========================================= */
+
+const photoFrame = document.getElementById("photoFrame");
+const photoFullscreen = document.getElementById("photoFullscreen");
+const backLetter = document.getElementById("backLetter");
+
+let lastTap = 0;
+
+
+/* Abrir fotografía */
+
+function openNoahPhoto(){
+
+    photoFullscreen.classList.add("active");
+
+    document.body.style.overflow = "hidden";
+}
+
+
+/* Cerrar fotografía */
+
+function closeNoahPhoto(){
+
+    photoFullscreen.classList.remove("active");
+
+    document.body.style.overflow = "";
+}
+
+
+/* Doble clic en computador */
+
+photoFrame.addEventListener("dblclick", function(){
+
+    openNoahPhoto();
+
+});
+
+
+/* Doble toque en celular */
+
+photoFrame.addEventListener("touchend", function(event){
+
+    const now = Date.now();
+
+    if(now - lastTap < 350){
+
+        event.preventDefault();
+
+        openNoahPhoto();
+
+    }
+
+    lastTap = now;
+
+});
+
+
+/* Botón volver */
+
+backLetter.addEventListener("click", function(){
+
+    closeNoahPhoto();
+
+});
+
+
+/* Tocar fuera de la imagen también permite cerrar */
+
+photoFullscreen.addEventListener("click", function(event){
+
+    if(event.target === photoFullscreen){
+
+        closeNoahPhoto();
+
+    }
+
+});
+
+
+/* ESC en computador */
+
+document.addEventListener("keydown", function(event){
+
+    if(event.key === "Escape"){
+
+        closeNoahPhoto();
+
+    }
+
+});
+    </script>
 
 </body>
   </html>
